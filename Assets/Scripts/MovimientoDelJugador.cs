@@ -10,6 +10,10 @@ public class MovimientoDelJugador : MonoBehaviour
 
     Rigidbody2D rb2D;
 
+    bool floorDetected = false;
+    bool isJump = false;
+    public float jumpForce = 5.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +21,7 @@ public class MovimientoDelJugador : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetKey("d") || Input.GetKey("right"))
         {
@@ -33,5 +37,26 @@ public class MovimientoDelJugador : MonoBehaviour
         {
             rb2D.velocity = new Vector2(0, rb2D.velocity.y); 
         }
+
+        Vector2 floor = transform.TransformDirection(Vector2.down);
+
+        if (Physics2D.Raycast(transform.position, floor, 1.0f))
+        {
+            floorDetected = true;
+            print("Contacto con el suelo");
+        }
+        else
+        {
+            floorDetected = false;
+            print("No hay contacto con el suelo");
+        }
+
+        isJump = Input.GetButtonDown("Jump");
+
+        if (isJump)
+        {
+            rb2D.AddForce(new Vector3(0, jumpForce, 0 ), ForceMode2D.Impulse);
+        }
+
     }
 }
