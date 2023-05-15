@@ -15,6 +15,12 @@ public class Telaraña : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        var enemigo = collision.collider.GetComponent<DañoAlEnemigo>();
+        if (enemigo)
+        {
+            enemigo.Takehit(1);
+        }
+
         Destroy(gameObject);
     }
 }
